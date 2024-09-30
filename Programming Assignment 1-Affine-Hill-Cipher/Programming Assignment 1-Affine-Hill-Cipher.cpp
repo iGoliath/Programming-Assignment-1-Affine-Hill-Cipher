@@ -11,6 +11,7 @@ void AffineEncrypt(int a, int b, string text);
 void AffineDecrypt(int a, int b, string text);
 void AffineBruteForce(int a, string text);
 void AffineKnownPT(string CT, string KPT);
+void RowTranspotitionEncrypt(int* key, string text);
 int main() {
 	string temp;
 	int a, b;
@@ -44,25 +45,27 @@ int main() {
 	//cin.ignore();
 	//AffineBruteForce(a, temp);
 
-	string one = "EDSGICKXHUKLZVEQZVKXWKZUKCVUH";
-	string two = "if";
-	AffineKnownPT(one, two);
+	cout << "Vegenere & Tansposition Ciphers: " << endl;
 
-	int hillkey[4];
-	cout << "Please enter the key for the hill cipher you wish to encrypt: ";
-	getline(cin, temp, '\n');
-	for (int i = 0; i < 4; i++) {
-		hillkey[i] = stoi(temp.substr(i, 1));
-	}
 
-	vector<int> hilltext;
-	cout << "Please enter the plaintext to be encrypted: ";
-	getline(cin, temp, '\n');
+	int key[7] = { 4, 3, 1, 2, 5, 6, 7 };
+	string attack = "attack postponed until two am";
+	RowTranspotitionEncrypt(key, attack);
+	//int hillkey[4];
+	//cout << "Please enter the key for the hill cipher you wish to encrypt: ";
+	//getline(cin, temp, '\n');
+	//for (int i = 0; i < 4; i++) {
+	//	hillkey[i] = stoi(temp.substr(i, 1));
+	//}
 
-	for (int i = 0; i < temp.length(); i++) {
-		if(isalpha(temp[i])) 
-		hilltext.push_back(ReturnVal(tolower(temp[i])));
-	}
+	//vector<int> hilltext;
+	//cout << "Please enter the plaintext to be encrypted: ";
+	//getline(cin, temp, '\n');
+
+	//for (int i = 0; i < temp.length(); i++) {
+	//	if(isalpha(temp[i])) 
+	//	hilltext.push_back(ReturnVal(tolower(temp[i])));
+	//}
 
 	
 	//HillCipher(hillkey, hilltext);
@@ -257,6 +260,18 @@ void AffineKnownPT(string CT, string KPT) {
 	while (beta < 0)
 		beta += 26;
 	AffineDecrypt(alpha, beta, CT);
+}
+
+void RowTranspotitionEncrypt(int* key, string text) {
+	int rows = text.length() / sizeof(key) + 1;
+	if (text.length() % rows != 0) {
+		while ()
+	}
+	vector<char> calc;
+	for (int i = 0; i < rows; i++) {
+		calc.push_back(text[i + key[0]]);
+		calc.push_back()
+	}
 }
 
 void HillCipher(int *key, vector<int> text) {
