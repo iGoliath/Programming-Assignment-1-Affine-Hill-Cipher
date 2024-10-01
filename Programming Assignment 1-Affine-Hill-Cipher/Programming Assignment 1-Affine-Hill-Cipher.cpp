@@ -263,14 +263,19 @@ void AffineKnownPT(string CT, string KPT) {
 }
 
 void RowTranspotitionEncrypt(int* key, string text) {
-	int rows = text.length() / sizeof(key) + 1;
-	if (text.length() % rows != 0) {
-		while ()
-	}
 	vector<char> calc;
-	for (int i = 0; i < rows; i++) {
-		calc.push_back(text[i + key[0]]);
-		calc.push_back()
+	int x = 0;
+	while (calc.size() < text.length()) {
+		if(isalpha(text[x]))
+		calc.push_back(text[x]);
+		x++;
+	}
+	x = 0;
+	int rows = text.length() / sizeof(key);
+	if (text.length() % rows != 0) {
+		while (calc.size() < (rows * sizeof(key))) {
+			calc.push_back('x');
+		}
 	}
 }
 
