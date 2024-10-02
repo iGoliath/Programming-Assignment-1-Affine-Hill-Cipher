@@ -12,6 +12,7 @@ void AffineDecrypt(int a, int b, string text);
 void AffineBruteForce(int a, string text);
 void AffineKnownPT(string CT, string KPT);
 void RowTranspotitionEncrypt(int* key, string text);
+void VegenereCipher(string text);
 int main() {
 	string temp;
 	int a, b;
@@ -45,12 +46,13 @@ int main() {
 	//cin.ignore();
 	//AffineBruteForce(a, temp);
 
-	cout << "Vegenere & Tansposition Ciphers: " << endl;
+	//cout << "Vegenere & Tansposition Ciphers: " << endl;
 
-
-	int key[7] = { 4, 3, 1, 2, 5, 6, 7 };
-	string attack = "attack postponed until two am";
-	RowTranspotitionEncrypt(key, attack);
+	string lol = "LCLLEWLJAZLNNZMVYIYLHRMHZA";
+	VegenereCipher(lol);
+	//int key[7] = {4, 3, 1, 2, 5, 6, 7};
+	//string attack = "attack postponed until two am";
+	//RowTranspotitionEncrypt(key, attack);
 	//int hillkey[4];
 	//cout << "Please enter the key for the hill cipher you wish to encrypt: ";
 	//getline(cin, temp, '\n');
@@ -70,6 +72,115 @@ int main() {
 	
 	//HillCipher(hillkey, hilltext);
 	return 0;
+}
+
+void VegenereCipher(string text) {
+	int freq[26] = { 0 };
+	for (int i = 0; i < text.length(); i++) {
+		switch (tolower(text[i])) {
+		case 'a':
+			freq[0]++;
+			break;
+		case 'b':
+			freq[1]++;
+			break;
+		case 'c':
+			freq[2]++;
+			break;
+		case 'd':
+			freq[3]++;
+			break;
+		case 'e':
+			freq[4]++;
+			break;
+		case 'f':
+			freq[5]++;
+			break;
+		case 'g':
+			freq[6]++;
+			break;
+		case 'h':
+			freq[7]++;
+			break;
+		case 'i':
+			freq[8]++;
+			break;
+		case 'j':
+			freq[9]++;
+			break;
+		case 'k':
+			freq[10]++;
+			break;
+		case 'l':
+			freq[11]++;
+			break;
+		case 'm':
+			freq[12]++;
+			break;
+		case 'n':
+			freq[13]++;
+			break;
+		case 'o':
+			freq[14]++;
+			break;
+		case 'p':
+			freq[15]++;
+			break;
+		case 'q':
+			freq[16]++;
+			break;
+		case 'r':
+			freq[17]++;
+			break;
+		case 's':
+			freq[18]++;
+			break;
+		case 't':
+			freq[19]++;
+			break;
+		case 'u':
+			freq[20]++;
+			break;
+		case 'v':
+			freq[21]++;
+			break;
+		case 'w':
+			freq[22]++;
+			break;
+		case 'x':
+			freq[23]++;
+			break;
+		case 'y':
+			freq[24]++;
+			break;
+		case 'z':
+			freq[25]++;
+			break;
+		}
+	}
+	int mostFreq = 0;
+	int HighestIndex = 0;
+	for (int i = 0; i < 26; i++) {
+		if (freq[i] > mostFreq) {
+			mostFreq = freq[i];
+			HighestIndex = i;
+		}
+		
+	}
+
+	int key = ReturnVal(alphabet[HighestIndex]) - 4;
+	vector<char> calc;
+	for (int i = 0; i < text.length(); i++) {
+		int index = (ReturnVal(tolower(text[i])) - key);
+		if (index < 0)
+			index += 26;
+		calc.push_back(alphabet[index]);
+	}
+
+	for (int i = 0; i < text.length(); i++) {
+		cout << calc[i];
+	}
+
 }
 
 void AffineEncrypt(int a, int b, string text) {
@@ -264,19 +375,43 @@ void AffineKnownPT(string CT, string KPT) {
 
 void RowTranspotitionEncrypt(int* key, string text) {
 	vector<char> calc;
-	int x = 0;
-	while (calc.size() < text.length()) {
-		if(isalpha(text[x]))
-		calc.push_back(text[x]);
-		x++;
+	for (int i = 0; i < text.length(); i++) {
+		if (isalpha(text[i]))
+			calc.push_back(text[i]);
 	}
-	x = 0;
-	int rows = text.length() / sizeof(key);
-	if (text.length() % rows != 0) {
-		while (calc.size() < (rows * sizeof(key))) {
+
+	int rows = calc.size() / sizeof(key) + 1;
+	if (calc.size() % rows != 0) {
+		while (calc.size() < (rows * (sizeof(key) - 1))) {
 			calc.push_back('x');
 		}
 	}
+
+	vector<char> transpose(calc.size());
+	int counter = 0;
+	int useKey;
+		for (int i = 0; i < (sizeof(key) - 1); i++) {
+			useKey = key[i];
+			counter = 0;
+			for (int j = 0; j < rows; j++) {
+				transpose[rows * (useKey - 1) + j] = calc[i + counter];
+				counter += (sizeof(key) - 1);
+			}
+		}
+		vector<char> transpose2(transpose.size());
+		for (int i = 0; i < (sizeof(key) - 1); i++) {
+			useKey = key[i];
+			counter = 0;
+			for (int j = 0; j < rows; j++) {
+				transpose2[rows * (useKey - 1) + j] = transpose[i + counter];
+				counter += (sizeof(key) - 1);
+			}
+		}
+	cout << "Encryption using double transposition is: ";
+	for (int i = 0; i < transpose2.size(); i++) {
+		cout << transpose2[i];
+	}
+	
 }
 
 void HillCipher(int *key, vector<int> text) {
